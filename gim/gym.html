@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Plan 4 Días - Versión Visual</title>
+  <style>
+    :root{--bg:#f6f8fa;--card:#ffffff;--accent:#2b6cb0;--muted:#6b7280}
+    body{font-family:Inter, system-ui, -apple-system, Helvetica, Arial; margin:0; background:var(--bg); color:#111}
+    header{background:linear-gradient(90deg, #0f172a, #1e3a8a); color:white; padding:26px 18px}
+    .container{max-width:1100px; margin:24px auto; padding:0 16px}
+    h1{margin:0; font-size:20px}
+    .meta{color:#cfe3ff; margin-top:6px; font-size:13px}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:18px}
+    .card{background:var(--card); border-radius:12px; padding:14px; box-shadow:0 6px 18px rgba(11,15,25,0.06)}
+    .card2{display:flex;background:var(--card); border-radius:12px; padding:14px; box-shadow:0 6px 18px rgba(11,15,25,0.06)}
+    .card h3{margin:0 0 8px 0}
+    .ej{display:flex; gap:12px; align-items:flex-start}
+    .ej img{width:140px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #e6eef8}
+    .ej .info{flex:1}
+    .meta-small{font-size:13px; color:var(--muted)}
+    .sets{font-weight:600; margin-top:6px}
+    .day-title{display:flex; justify-content:space-between; align-items:center}
+    .btn{display:inline-block; background:var(--accent); color:white; padding:8px 12px; border-radius:8px; text-decoration:none}
+    .actions{margin-top:10px}
+    footer{max-width:1100px;margin:24px auto;color:#374151;font-size:13px}
+    .instructions{background:#fff; padding:12px; border-radius:10px; box-shadow:0 6px 18px rgba(11,15,25,0.04)}
+    details{margin-top:8px}
+    .badge{background:#e6f0ff;color:#123; padding:4px 8px; border-radius:999px; font-size:12px}
+    @media (max-width:560px){.ej img{width:110px;height:80px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>Plan de Entrenamiento 4 Días</h1>
+    <div class="meta">Perfil: Hombre, 187 cm, 102 kg • Objetivo: Reducción de grasa • Frecuencia: 4 días/semana</div>
+  </div>
+</header>
+<main class="container">
+  <section class="instructions card">
+    <strong>Cómo usar esta guía</strong>
+    <ul>
+      <li>Cada ejercicio tiene una imagen, descripción corta y la indicación de series/repeticiones.</li>
+      <li>Para generar un PDF con las imágenes incluidas, abre este archivo en tu navegador y usa <em>Archivo → Imprimir → Guardar como PDF</em> (o Ctrl/Cmd+P).</li>
+      <li>Si alguna imagen no carga, clic derecho → Guardar imagen como... para descargarla y usar una versión local.</li>
+    </ul>
+    <div class="actions"><a class="btn" href="#" onclick="window.print();return false">Guardar/Imprimir como PDF</a></div>
+  </section>
+
+  <!-- Día 1 -->
+  <section class="card" id="dia1">
+    <div class="day-title">
+      <div>
+        <h2>DÍA 1 — Tren Superior (Empuje)</h2>
+        <div class="meta-small">Enfoque: Pecho, hombros, tríceps • Calentamiento: 5 min bicicleta + rotaciones</div>
+      </div>
+      <div class="badge">Finalizador: 10 min cardio</div>
+    </div>
+
+    <div class="grid" style="margin-top:12px">
+      <!-- Press de banca -->
+      <article class="card">
+        <h3>Press de Banca con Barra</h3>
+        <div class="ej">
+          <img src="./img/PressBancaBarra.jfif" alt="Press de Banca"/>
+          <div class="info">
+            <div class="meta-small">Técnica: espalda apoyada, pies firmes, empujar con pecho y tríceps</div>
+            <div class="sets">4 × 8–10 reps</div>
+            <details><summary>Consejo técnico</summary><p>No arquear en exceso la zona lumbar. Mantén barra alineada con el esternón.</p></details>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Press Militar de Pie</h3>
+        <div class="ej">
+          <img src="./img/pressMilitarPie.png" alt="Press Militar"/>
+          <div class="info">
+            <div class="meta-small">Técnica: tronco estable, empuje vertical, cuidado con la espalda</div>
+            <div class="sets">4 × 8–10 reps</div>
+            <details><summary>Variaciones</summary><p>Se puede hacer sentado para mayor estabilidad o con mancuernas para corregir asimetrías.</p></details>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Press Inclinado con Mancuernas</h3>
+        <div class="ej">
+          <img src="./img/pressInclinadoMancuernas.png" alt="Press Inclinado"/>
+          <div class="info">
+            <div class="meta-small">Técnica: banco a 30–45°, empuje focalizando la parte superior del pecho</div>
+            <div class="sets">3 × 10–12 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Elevaciones Laterales</h3>
+        <div class="ej">
+          <img src="./img/vueloLateral.png" alt="Elevaciones Laterales"/>
+          <div class="info">
+            <div class="meta-small">Técnica: movimiento controlado, codo ligeramente flexionado</div>
+            <div class="sets">3 × 12–15 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Fondos en Paralelas</h3>
+        <div class="ej">
+          <img src="./img/fondosEnParalelas.png" alt="Fondos"/>
+          <div class="info">
+            <div class="meta-small">Técnica: torso inclinado hacia adelante para foco en pecho; más vertical para tríceps</div>
+            <div class="sets">3 × 8–12 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Press Francés</h3>
+        <div class="ej">
+          <img src="./img/pressFrances.jfif" alt="Press Francés"/>
+          <div class="info">
+            <div class="meta-small">Técnica: movimiento desde la frente/por detrás, control para protección de codo</div>
+            <div class="sets">3 × 10–12 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Extensiones de Tríceps en Polea</h3>
+        <div class="ej">
+          <img src="./img/tricepsPolea.jfif" alt="Tríceps en polea"/>
+          <div class="info">
+            <div class="meta-small">Técnica: codos pegados al torso, extensión completa</div>
+            <div class="sets">3 × 12–15 reps</div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Día 2 -->
+  <section class="card" id="dia2" style="margin-top:18px">
+    <div class="day-title">
+      <div>
+        <h2>DÍA 2 — Tren Inferior + Core</h2>
+        <div class="meta-small">Enfoque: piernas y glúteos • Calentamiento: 5 min cinta + sentadillas sin peso</div>
+      </div>
+      <div class="badge">Core Circuit: 3 rondas</div>
+    </div>
+
+    <div class="grid" style="margin-top:12px">
+      <article class="card">
+        <h3>Sentadillas con Barra</h3>
+        <div class="ej">
+          <img src="./img/sentadillaConBarra.png" alt="Sentadilla"/>
+          <div class="info">
+            <div class="meta-small">Técnica: caderas hacia atrás, rodillas alineadas con pies</div>
+            <div class="sets">4 × 10–12 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Peso Muerto Rumano</h3>
+        <div class="ej">
+          <img src="./img/pesoMuertoRumano.png" alt="Peso muerto rumano"/>
+          <div class="info">
+            <div class="meta-small">Técnica: bisagra de cadera, espalda neutra, rodillas ligeramente flexionadas</div>
+            <div class="sets">4 × 10–12 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Prensa de Piernas</h3>
+        <div class="ej">
+          <img src="./img/prensaPiernas.jfif" alt="Prensa de piernas"/>
+          <div class="info">
+            <div class="meta-small">Técnica: evitar bloqueo completo de rodillas, recorrido controlado</div>
+            <div class="sets">3 × 12–15 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Zancadas con Mancuernas</h3>
+        <div class="ej">
+          <img src="./img/zancadaMancuerna.png" alt="Zancadas"/>
+          <div class="info">
+            <div class="meta-small">Técnica: paso amplio, rodilla delantera sobre el tobillo</div>
+            <div class="sets">3 × 12 por pierna</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Extensiones de Cuádriceps</h3>
+        <div class="ej">
+          <img src="./img/cuadricept.jfif" alt="Extensiones cuádriceps"/>
+          <div class="info">
+            <div class="meta-small">Técnica: recorrido controlado, foco en cuádriceps</div>
+            <div class="sets">3 × 12–15 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Curl de Femoral</h3>
+        <div class="ej">
+          <img src="./img/curlFemoral.png" alt="Curl femoral"/>
+          <div class="info">
+            <div class="meta-small">Técnica: control en la fase excéntrica, evitar balanceo</div>
+            <div class="sets">3 × 12–15 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Elevaciones de Pantorrilla</h3>
+        <div class="ej">
+          <img src="./img/elevaPantorrilla.jfif" alt="Pantorrillas"/>
+          <div class="info">
+            <div class="meta-small">Técnica: recorrido completo, pausa en la parte alta</div>
+            <div class="sets">4 × 15–20 reps</div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="day-title">
+
+      <div style="margin-top:12px" class="card">
+        <h3>Core Circuit (3 rondas)</h3>
+        <ul>
+          <li>Plancha — 45 seg</li>
+          <li>Crunches — 20 reps</li>                  
+          <li>Russian twists — 30 reps</li>
+          <li>Descanso entre rondas — 60 seg</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Día 3 -->
+  <section class="card" id="dia3" style="margin-top:18px">
+    <div class="day-title">
+      <div>
+        <h2>DÍA 3 — Tren Superior (Tirón)</h2>
+        <div class="meta-small">Enfoque: espalda y bíceps • Calentamiento: 5 min remo suave</div>
+      </div>
+      <div class="badge">Finalizador: 12 min intervalos</div>
+    </div>
+
+    <div class="grid" style="margin-top:12px">
+      <article class="card">
+        <h3>Dominadas / Pull-ups</h3>
+        <div class="ej">
+          <img src="./img/dominadas.jfif" alt="Dominadas"/>
+          <div class="info">
+            <div class="meta-small">Técnica: control en descenso, usar agarre que te permita trabajar 6–10 reps</div>
+            <div class="sets">4 × 6–10 reps (asistidas si hace falta)</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Remo con Barra</h3>
+        <div class="ej">
+          <img src="./img/remoConBarra.png" alt="Remo con barra"/>
+          <div class="info">
+            <div class="meta-small">Técnica: espalda neutra, tirar con los codos hacia atrás</div>
+            <div class="sets">4 × 8–10 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Jalón al Pecho</h3>
+        <div class="ej">
+          <img src="./img/jalonAlPecho.png" alt="Jalón al pecho"/>
+          <div class="info">
+            <div class="meta-small">Técnica: pecho abierto, evitar impulso de torso</div>
+            <div class="sets">3 × 10–12 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Remo con Mancuerna</h3>
+        <div class="ej">
+          <img src="./img/remoConMancuerna.jfif" alt="Remo mancuerna"/>
+          <div class="info">
+            <div class="meta-small">Técnica: apoyo estable, rango completo</div>
+            <div class="sets">3 × 10–12 por brazo</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Face Pulls</h3>
+        <div class="ej">
+          <img src="./img/facePulls.jfif" alt="Face pulls"/>
+          <div class="info">
+            <div class="meta-small">Técnica: alto en la cara, trabajar parte posterior del deltoides</div>
+            <div class="sets">3 × 12–15 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Curl de Bíceps con Barra</h3>
+        <div class="ej">
+          <img src="./img/curlBicepsBarra.png" alt="Curl barra"/>
+          <div class="info">
+            <div class="meta-small">Técnica: codos quietos, control en descenso</div>
+            <div class="sets">3 × 10–12 reps</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Curl Martillo con Mancuernas</h3>
+        <div class="ej">
+          <img src="./img/curlMartilloMancuerna.png" alt="Curl martillo"/>
+          <div class="info">
+            <div class="meta-small">Técnica: agarre neutro, buen rango de movimiento</div>
+            <div class="sets">3 × 10–12 reps</div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Día 4 -->
+  <section class="card" id="dia4" style="margin-top:18px">
+    <div class="day-title">
+      <div>
+        <h2>DÍA 4 — Full Body Metabólico</h2>
+        <div class="meta-small">Enfoque: quema de calorías y acondicionamiento • Calentamiento: 5 min bici</div>
+      </div>
+      <div class="badge">Circuitos intensos</div>
+    </div>
+
+    <div class="grid" style="margin-top:12px">
+      <article class="card">
+        <h3>Thrusters con Mancuernas</h3>
+        <div class="ej">
+          <img src="./img/thrustersMancuerna.jfif" alt="Thruster"/>
+          <div class="info">
+            <div class="meta-small">Técnica: sentadilla + empuje, coordinar respiración</div>
+            <div class="sets">Circuito — 45 seg trabajo / 15 seg descanso</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Burpees</h3>
+        <div class="ej">
+          <img src="./img/burpee.png" alt="Burpee"/>
+          <div class="info">
+            <div class="meta-small">Técnica: mantener ritmo, aterrizar suavemente</div>
+            <div class="sets">Circuito — 45/15</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Swing con Kettlebell</h3>
+        <div class="ej">
+          <img src="./img/swingKettlebell.png" alt="Kettlebell swing"/>
+          <div class="info">
+            <div class="meta-small">Técnica: impulso de cadera, no brazos</div>
+            <div class="sets">Circuito — 45/15</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Mountain Climbers</h3>
+        <div class="ej">
+          <img src="./img/mountainClimber.jfif" alt="Mountain climbers"/>
+          <div class="info">
+            <div class="meta-small">Técnica: ritmo estable, núcleo tensionado</div>
+            <div class="sets">Circuito — 45/15</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Remo en Máquina (alta intensidad)</h3>
+        <div class="ej">
+          <img src="./img/remoErgometro.jfif" alt="Remo máquina"/>
+          <div class="info">
+            <div class="meta-small">Técnica: trayecto potente, controlar recuperación</div>
+            <div class="sets">Circuito — 45/15</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Plancha con Toque de Hombros</h3>
+        <div class="ej">
+          <img src="./img/planchaToqueHombro.png" alt="Plancha toque"/>
+          <div class="info">
+            <div class="meta-small">Técnica: caderas estables, evitar rotación</div>
+            <div class="sets">Circuito — 45/15</div>
+          </div>
+        </div>
+      </article>
+
+      <!--
+      <article class="card">
+        <h3>Segundo circuito (3 rondas)</h3>
+        <div class="info">
+          <ul>
+            <li>Sentadillas con Mancuernas — 40/20</li>
+            <li>Push-ups — 40/20</li>
+            <li>Deadlift con Mancuernas — 40/20</li>
+            <li>Jumping Jacks — 40/20</li>
+            <li>Abs Bicicleta — 40/20</li>
+          </ul>
+        </div>
+      </article>
+      -->
+      <section  style="margin-top:18px">
+        <h2>Segundo circuito (3 rondas)</h2>
+      <article class="card2">
+        
+        <div class="ej">
+          <p class="meta-small">Sentadillas con Mancuernas — 40/20</p>
+          <img src="./img/sentadillaMancuerna.png" alt="sentadilla mancuerna"/>
+        </div>
+        
+        <div class="ej">
+          <p class="meta-small">Push-ups — 40/20</p>
+          <img src="./img/pushUps.png" alt="push ups"/>
+        </div>
+        
+        <div class="ej">
+          <p class="meta-small">Deadlift con Mancuernas — 40/20</p>
+          <img src="./img/deadLift.jfif" alt="dead lift"/>
+        </div>
+        
+        <div class="ej">
+          <p class="meta-small">Jumping Jacks — 40/20</p>
+          <img src="./img/jumpingJacks.jfif" alt="jumpingJacks"/>
+        </div>
+        
+        <div class="ej">
+          <p class="meta-small">Abs Bicicleta — 40/20</p>
+          <img src="./img/absBicicleta.jfif" alt="absBicicleta"/>
+        </div>
+      </article>
+      </section>
+      
+
+    </div>
+  </section>
+
+</main>
+<footer>
+  <div class="container">Creado por Pedro Bolig.</div>
+</footer>
+</body>
+</html>
