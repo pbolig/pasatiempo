@@ -26,6 +26,13 @@ let board, score, level, totalLinesCleared, isPaused, isGameOver;
 let currentPiece, nextPiece, currentPosition;
 let lastTime, dropCounter, animationFrameId;
 
+// ----- NUEVAS VARIABLES PARA CONTROL TÁCTIL -----
+let touchStartX = 0;
+let touchStartY = 0;
+const swipeThreshold = 50; // Mínimo de píxeles para detectar un swipe
+const tapThreshold = 20;   // Máximo de píxeles para considerarlo un "tap"
+const hardDropThreshold = 150; // Mínimo de píxeles para un hard drop
+
 function draw() {
     if (!board) return;
     gameBoardElement.innerHTML = '';
@@ -62,27 +69,34 @@ function draw() {
     }
 }
 
+// ----- FUNCIÓN drawNextPiece MODIFICADA -----
+// Ya no usa pixeles fijos, usa '1fr' para llenar 
+// el contenedor que definimos en el CSS.
 function drawNextPiece() {
     nextPieceBoardElement.innerHTML = '';
     if (nextPiece) {
-        const pieceContainer = document.createElement('div');
-        pieceContainer.style.display = 'grid';
-        pieceContainer.style.gridTemplateRows = `repeat(${nextPiece.shape.length}, 20px)`;
-        pieceContainer.style.gridTemplateColumns = `repeat(${nextPiece.shape[0].length}, 20px)`;
-        nextPiece.shape.forEach((row, y) => {
+        const { shape, color } = nextPiece;
+        const rows = shape.length;
+        const cols = shape[0].length;
+
+        // Configurar la grilla del 'next-piece-board' dinámicamente
+        nextPieceBoardElement.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+        nextPieceBoardElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+        shape.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value > 0) {
                     const block = document.createElement('div');
-                    block.className = `block ${nextPiece.color}`;
+                    block.className = `block ${color}`;
                     block.style.gridRowStart = y + 1;
                     block.style.gridColumnStart = x + 1;
-                    pieceContainer.appendChild(block);
+                    nextPieceBoardElement.appendChild(block);
                 }
             });
         });
-        nextPieceBoardElement.appendChild(pieceContainer);
     }
 }
+
 
 function startGame() {
     board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
@@ -136,6 +150,7 @@ function movePiece(dx, dy) {
 }
 
 function hardDrop() {
+    if (isGameOver || isPaused) return;
     while (movePiece(0, 1)) {}
 }
 
@@ -178,7 +193,10 @@ function lockPiece() {
     const pieceIndex = PIECES.findIndex(p => p.name === name);
     shape.forEach((row, r) => {
         row.forEach((value, c) => {
-            if (value > 0) board[y + r][x + c] = pieceIndex + 1;
+            if (value > 0) {
+                if (y + r < 0) return; // Evita error si se bloquea por encima
+                board[y + r][x + c] = pieceIndex + 1;
+            }
         });
     });
     clearLines();
@@ -232,6 +250,7 @@ function update(time = 0) {
     animationFrameId = requestAnimationFrame(update);
 }
 
+// ----- MANEJO DE CONTROLES DE TECLADO (Sin cambios) -----
 document.addEventListener('keydown', event => {
     if (event.key.toLowerCase() === 'p') {
         togglePause();
@@ -251,15 +270,88 @@ document.addEventListener('keydown', event => {
     draw();
 });
 
+// ----- MANEJO DE BOTONES (Conexión de controles táctiles) -----
 startButton.addEventListener('click', () => {
     startScreen.classList.add('hidden');
+    // Conectar eventos táctiles AL INICIAR
+    gameBoardElement.addEventListener('touchstart', handleTouchStart);
+    gameBoardElement.addEventListener('touchmove', handleTouchMove);
+    gameBoardElement.addEventListener('touchend', handleTouchEnd);
     startGame();
 });
 
 restartButton.addEventListener('click', () => {
     endScreen.classList.add('hidden');
+    // Conectar eventos táctiles (por si es la primera partida en móvil)
+    gameBoardElement.addEventListener('touchstart', handleTouchStart);
+    gameBoardElement.addEventListener('touchmove', handleTouchMove);
+    gameBoardElement.addEventListener('touchend', handleTouchEnd);
     startGame();
 });
 
+// Sobrescribir endGame para desconectar eventos
+const originalEndGame = endGame;
+endGame = function() {
+    originalEndGame();
+    // Desconectar eventos táctiles AL TERMINAR
+    gameBoardElement.removeEventListener('touchstart', handleTouchStart);
+    gameBoardElement.removeEventListener('touchmove', handleTouchMove);
+    gameBoardElement.removeEventListener('touchend', handleTouchEnd);
+}
+
 board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 draw();
+
+
+// ----------------------------------
+// ----- NUEVAS FUNCIONES TÁCTILES -----
+// ----------------------------------
+
+function handleTouchStart(e) {
+    // Evita que la página se mueva
+    e.preventDefault(); 
+    if (isPaused || isGameOver) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+}
+
+function handleTouchMove(e) {
+    e.preventDefault();
+}
+
+function handleTouchEnd(e) {
+    e.preventDefault();
+    if (isPaused || isGameOver) return;
+    
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+
+    if (absDeltaX < tapThreshold && absDeltaY < tapThreshold) {
+        // Es un TAP (Tocar)
+        rotatePiece();
+    } else if (absDeltaX > absDeltaY) {
+        // Es un SWIPE HORIZONTAL (Deslizar a los lados)
+        if (deltaX > swipeThreshold) {
+            movePiece(1, 0); // Derecha
+        } else if (deltaX < -swipeThreshold) {
+            movePiece(-1, 0); // Izquierda
+        }
+    } else {
+        // Es un SWIPE VERTICAL (Deslizar hacia abajo)
+        if (deltaY > hardDropThreshold) {
+            hardDrop(); // Swipe rápido (Hard Drop)
+        } else if (deltaY > swipeThreshold) {
+            movePiece(0, 1); // Swipe lento (Bajar)
+            dropCounter = 0;
+        }
+    }
+    
+    // Redibujar después de la acción
+    draw();
+}
