@@ -39,27 +39,35 @@
         </div>
 
         <div class="content-grid">
-            
-            <main class="weather-column">
-                <div id="content"></div>
-            </main>
 
-            <aside class="sidebar-column">
-                <div class="ad-placeholder">
-                    <h4>Auspiciante</h4>
-                    <p>Espacio disponible para publicidad no invasiva. (Ej: 300x250)</p>
-                </div>
+            <aside class="sidebar-left">
                 <div class="ad-placeholder">
                     <h4>Hobbies</h4>
                     <p>Links de interés, guías y más.</p>
                 </div>
             </aside>
 
-            <section class="news-row">
-                <div id="newsContent"></div>
-            </section>
+            <div class="main-content-column">
+                <main class="weather-column">
+                    <div id="content"></div>
+                </main>
+                <section class="news-row">
+                    <div id="newsContent"></div>
+                </section>
+            </div>
 
-        </div> </div> <script src="js/leaflet.min.js"></script>
+            <aside class="sidebar-right">
+                <div class="ad-placeholder">
+                    <h4>Auspiciante</h4>
+                    <p>Espacio disponible para publicidad no invasiva. (Ej: 300x250)</p>
+                </div>
+            </aside>
+
+        </div>
+
+    </div> 
+    
+    <script src="js/leaflet.min.js"></script>
     <script src="js/config.js"></script>
     <script src="js/weather.js"></script>
     <script src="js/news.js"></script>
