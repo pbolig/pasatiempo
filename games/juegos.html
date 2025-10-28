@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juegos - Actualidad</title>
+    
+    <link rel="stylesheet" href="../css/styles.css"> 
+    
+    <style>
+        /* Contenedor principal centrado */
+        .game-hub-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        /* Título de la sección */
+        .game-hub-container h1 {
+            color: white;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Grilla para las tarjetas de juego */
+        .game-grid {
+            display: grid;
+            /* Se adapta automáticamente: 1 o 2 columnas */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* Tarjeta de juego individual */
+        .game-card {
+            background: var(--color-superficie, white);
+            border-radius: var(--radio-borde, 15px);
+            box-shadow: var(--sombra-card, 0 10px 30px rgba(0,0,0,0.3));
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--color-texto-principal, #333);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+        }
+        
+        /* Placeholder para la imagen del juego */
+        .game-card-image {
+            height: 200px;
+            background-color: #333;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+        }
+
+        .game-card-content {
+            padding: 20px;
+            text-align: left;
+        }
+        .game-card-content h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .game-card-content p {
+            font-size: 1em;
+            color: var(--color-texto-secundario, #666);
+            line-height: 1.5;
+        }
+        
+        /* Botón para volver al inicio */
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            font-size: 1.1em;
+            color: white;
+            background: rgba(0,0,0,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .back-link:hover {
+            background: rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-hub-container">
+        <h1>🎮 Selección de Juegos</h1>
+
+        <div class="game-grid">
+            
+            <a href="ajedrez/" target='_blank' class="game-card">
+                <div class="game-card-image">♟️</div>
+                <div class="game-card-content">
+                    <h2>Ajedrez Clásico</h2>
+                    <p>Desafía a la máquina en este clásico de estrategia. (Proyecto en desarrollo).</p>
+                </div>
+            </a>
+
+            <a href="tetris/" target='_blank' class="game-card">
+                <div class="game-card-image">🧱</div>
+                <div class="game-card-content">
+                    <h2>Tetris</h2>
+                    <p>Pon a prueba tus reflejos y apila los bloques sin dejar huecos.</p>
+                </div>
+            </a>
+
+        </div>
+
+        <a href="../index.html" class="back-link">← Volver al Inicio</a>
+    </div>
+</body>
+</html>

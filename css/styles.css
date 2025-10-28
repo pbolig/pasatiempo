@@ -548,3 +548,14 @@ button:active {
             "sponsors";
     }
 }
+
+/* Estilo para la fecha en el header */
+.header-date {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: white;
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    margin-top: -10px; /* Ajusta el espacio con el H1 */
+    margin-bottom: 10px;
+}

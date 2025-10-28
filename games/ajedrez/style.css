@@ -1,0 +1,394 @@
+/* style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #4CAF50; /* Un verde vibrante */
+    color: #333;
+}
+
+h1 {
+    color: #FFD700;
+    margin-bottom: 20px;
+}
+
+#game-container {
+    display: flex; /* Ahora es flex para contener el layout principal (tablero + panel) */
+    flex-direction: column; /* Organiza elementos de game-container en columna (ej. título, fen-loader, layout) */
+    align-items: center;
+    background-color: #ECEFF1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Contenedor principal para el tablero y el panel lateral */
+#game-layout-container {
+    display: flex; /* Flexbox para colocar el tablero y el panel uno al lado del otro */
+    align-items: flex-start; /* Alinea elementos al inicio del eje transversal */
+    margin-top: 20px; /* Espacio entre el game-container y el layout interno */
+}
+
+#chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 70px); /* 8 columnas de 70px cada una */
+    grid-template-rows: repeat(8, 70px);    /* 8 filas de 70px cada una */
+    width: 560px;
+    height: 560px;
+    border: 2px solid #333;
+}
+
+.square {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.light-square {
+    background-color: #f0d9b5;
+}
+
+.dark-square {
+    background-color: #b58863;
+}
+
+.piece-img {
+    width: 85%;
+    height: 85%;
+    cursor: pointer;
+}
+
+.light {
+    background-color: #F0D9B5;
+}
+.dark {
+    background-color: #B58863;
+}
+
+/* Clases para resaltar casillas */
+.selected {
+    background-color: #6a9ed3 !important; /* Un azul para la casilla seleccionada */
+}
+
+.highlight {
+    background-color: rgba(20, 85, 30, 0.5) !important; /* Un verde translúcido para movimientos legales */
+}
+
+.en-passant-target {
+    border: 3px dashed #FFD700;
+    box-sizing: border-box;
+}
+
+.piece {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    display: block;
+    margin: auto;
+}
+
+/* --- Estilos para el Panel Lateral --- */
+#side-panel {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    padding: 15px; /* Un poco más de padding interno */
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    width: 250px;
+    min-width: 250px;
+    max-height: 560px; /* Igual a la altura del tablero */
+    box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
+    
+    /* ¡LA CLAVE DE LA SOLUCIÓN! */
+    /* 'gap' crea un espacio uniforme de 15px entre todos los elementos del panel. */
+    gap: 15px; 
+}
+
+
+
+/* Estilo para la información del juego */
+#status-message {
+    /* margin: 0 0 15px 0; */ /* <- Eliminamos el margen para que 'gap' lo controle */
+    color: #8BC34A;
+    font-weight: bold;
+    text-align: center;
+    min-height: 2.5em; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #263238; /* Un fondo oscuro para que resalte */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#reset-button {
+    margin-top: 15px; /* Espacio encima del botón */
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #DC143C;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#reset-button, #undo-button {
+    /* margin-top: 15px; */ /* <- Eliminamos márgenes individuales */
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#reset-button:hover {
+    background-color: #FF4500;
+}
+
+#reset-button {
+    background-color: #DC143C; /* Rojo */
+}
+
+#undo-button {
+    background-color: #f39c12; /* Naranja */
+}
+
+#undo-button:hover {
+    background-color: #e67e22;
+}
+
+/* --- Estilos para el Bloque de Piezas Capturadas (VERSIÓN DEFINITIVA) --- */
+
+/* Estilo para el contenedor principal de cada jugador (el que tiene el borde) */
+/* Antes se llamaba .captured-pieces-list, ahora es el contenedor padre */
+#white-captured, #black-captured {
+    padding: 8px;
+    background-color: #455A64;
+    border-radius: 5px;
+    color: #CFD8DC;
+}
+
+/* Estilo para el título H4 */
+#white-captured h4, #black-captured h4 {
+    margin: 0 0 8px 0; /* Margen solo abajo para separarlo de las piezas */
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+/* Estilo para el sub-contenedor que SÓLO tiene las imágenes */
+/* ¡AQUÍ ES DONDE OCURRE LA MAGIA DEL AJUSTE! */
+.captured-pieces-inner-list {
+    display: flex;
+    flex-wrap: wrap; /* Esta es la propiedad clave */
+    gap: 4px;        /* Espacio entre las imágenes */
+    min-height: 28px;/* Alto mínimo para que no se colapse si está vacío */
+}
+
+/* Estilo final para las imágenes, sin cambios */
+.captured-piece-img {
+    width: 28px;
+    height: 28px;
+}
+
+.captured-piece-img {
+    width: 28px;
+    height: 28px;
+}
+
+/* --- Estilos para el Registro de Movimientos --- */
+#moves-list-container {
+    /* (El resto de los estilos del contenedor se mantienen igual) */
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #37474F;
+    border-radius: 5px;
+    color: #CFD8DC;
+    font-size: 0.9em;
+    flex-grow: 1; 
+    overflow-y: auto; 
+    min-height: 100px;
+}
+
+#moves-list-container h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #ffd700;
+    text-align: center;
+}
+
+#moves-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* LA MAGIA DE GRID PARA ALINEAR TODO */
+#moves-list li {
+    display: grid; /* Convertimos la fila en una parrilla */
+    grid-template-columns: auto 1fr 1fr; /* 3 columnas: N°, Jugada Blanca, Jugada Negra */
+    gap: 10px; /* Espacio entre las columnas */
+    padding: 4px 0;
+    border-bottom: 1px solid #546E7A;
+    align-items: center; /* Centra el texto verticalmente en la fila */
+}
+
+#moves-list li:last-child {
+    border-bottom: none;
+}
+
+#moves-list .move-number {
+    font-weight: bold;
+    color: #aaeebb;
+    text-align: right; /* Alinea el número a la derecha para un look limpio */
+}
+
+#moves-list .move-white, #moves-list .move-black {
+    text-align: center; /* Centra la notación en su columna */
+    font-family: 'Courier New', Courier, monospace; /* Una fuente monoespaciada se ve genial para notación */
+    font-size: 1.1em;
+}
+
+#moves-list .move-black {
+    color: #B0BEC5; 
+}
+
+
+/* Estilos para el diálogo de promoción */
+#promotion-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2c3e50;
+    border: 3px solid #f39c12;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    color: white;
+    font-size: 1.1em;
+}
+
+#promotion-dialog.hidden {
+    display: none;
+}
+
+#promotion-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.promotion-piece-option {
+    width: 60px;
+    height: 60px;
+    background-color: #34495e;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.promotion-piece-option:hover {
+    border-color: #2980b9;
+    background-color: #4a6781;
+    transform: scale(1.05);
+}
+
+.promotion-piece-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Estilo para el botón Deshacer */
+#undo-button {
+    margin-top: 10px; /* Espacio debajo del botón de Reiniciar */
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #f39c12; /* Naranja para destacar */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#undo-button:hover {
+    background-color: #e67e22; /* Naranja más oscuro al pasar el ratón */
+}
+
+/* Estilos para el selector de dificultad */
+#difficulty-selector {
+    /* margin-top: 15px; */ /* <- Eliminamos el margen */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alinea label a la izq y select a la der */
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+}
+
+#difficulty-selector label {
+    font-weight: bold;
+}
+
+#difficulty-level {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+/* --- Estilo para la casilla del rey en jaque --- */
+.in-check {
+    /* Puedes ajustar el color y el estilo a tu gusto */
+    background-color: #FF0000; /* Rojo brillante */
+    box-shadow: inset 0 0 10px 5px rgba(255, 0, 0, 0.7); /* Sombra interna para efecto de brillo */
+    /* Opcional: Una animación sutil para llamar más la atención */
+    animation: pulse-check 1s infinite alternate;
+}
+
+/* Estilos para el selector de modo de juego */
+#game-mode-selector {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+}
+#game-mode-selector label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+#game-mode-selector div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+@keyframes pulse-check {
+    from {
+        box-shadow: inset 0 0 10px 5px rgba(255, 0, 0, 0.7);
+    }
+    to {
+        box-shadow: inset 0 0 15px 8px rgba(255, 0, 0, 0.9);
+    }
+}

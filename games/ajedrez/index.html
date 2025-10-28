@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajedrez de SAMI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Ajedrez</h1>
+
+    <div id="game-container">
+        <div id="chessboard"></div> 
+        <p id="status-message">Bienvenido al Ajedrez. Es el turno de las Blancas.</p>
+        <button id="reset-button">Reiniciar Juego</button>
+        
+        <button id="undo-button">Deshacer Último Movimiento</button>
+        <div id="difficulty-selector">
+            <label for="difficulty-level">Dificultad IA:</label>
+            <select id="difficulty-level">
+                <option value="1">Novato</option>
+                <option value="3" selected>Normal</option>
+                <option value="5">Experto</option>
+            </select>
+        </div>
+
+        <div id="game-mode-selector">
+            <label>Modo de Juego:</label>
+            <div>
+                <input type="radio" id="mode-vs-ai" name="gameMode" value="vsAI" checked>
+                <label for="mode-vs-ai">Jugador vs. IA</label>
+            </div>
+            <div>
+                <input type="radio" id="mode-vs-player" name="gameMode" value="vsPlayer">
+                <label for="mode-vs-player">Jugador vs. Jugador</label>
+            </div>
+        </div>
+
+        <div id="promotion-dialog" class="hidden">
+            <p>Elige una pieza para promocionar tu peón:</p>
+            <div id="promotion-options"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

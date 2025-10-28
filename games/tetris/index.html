@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tetris Sami</title>
+</head>
+<body>
+    <h1>tetris</h1>
+
+    <div id="game-container">
+        <div id="game-board">
+            <div class="game-overlay" id="start-screen">
+                <h2>TETRIS</h2>
+                <p>Presiona el botón para comenzar</p>
+                <button id="start-button">Comenzar Juego</button>
+            </div>
+
+            <div class="game-overlay hidden" id="end-screen">
+                <h2>Partida Terminada</h2>
+                <p>Puntuación Final: <span id="final-score">0</span></p>
+                <button id="restart-button">Jugar de Nuevo</button>
+            </div>
+
+            <div class="game-overlay hidden" id="pause-screen">
+                <h2>PAUSA</h2>
+            </div>
+        </div>
+        
+        <div id="game-info">
+            <h2>Puntuación</h2>
+            <p id="score">0</p>
+            
+            <h3>Siguiente</h3>
+            <div id="next-piece-board"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
