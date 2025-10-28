@@ -1,0 +1,81 @@
+{
+  "apis": {
+    "rss2json": {
+      "apiKey": "iifmk9vizxycrsate4axv9qrvlkwog07muxftbxt",
+      "enabled": true,
+      "comment": "Gratis sin registro - 10,000 requests/día. Obtener en: https://rss2json.com/"
+    },
+    "gnews": {
+      "apiKey": "b4a309baf9502803a3dba944d5b1fdd2",
+      "enabled": true,
+      "comment": "100 requests/día gratis. Registrarse en: https://gnews.io/"
+    },
+    "newsapi": {
+      "apiKey": "bb86f58504c04d9c8c634f1d5278d9b6",
+      "enabled": true,
+      "comment": "100 requests/día gratis. Registrarse en: https://newsapi.org/"
+    },
+    "thenewsapi": {
+      "apiKey": "bb86f58504c04d9c8c634f1d5278d9b6",
+      "enabled": true,
+      "comment": "Gratis con registro. Registrarse en: https://www.thenewsapi.com/"
+    },
+    "mediastack": {
+      "apiKey": "923837542bdb207cc3eb56055e55ba78",
+      "enabled": true,
+      "comment": "500 requests/mes gratis. Registrarse en: https://mediastack.com/"
+    },
+    "currentsapi": {
+      "apiKey": "ibtbMQmw_jy2RrpT4uwufWQ2jvMcFkLydYDNRh1zyKTSHta9",
+      "enabled": true,
+      "comment": "600 requests/día gratis. Registrarse en: https://currentsapi.services/"
+    }
+  },
+  "rssFeeds": {
+    "nacionales": [
+      { "url": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/", "name": "La Nación", "enabled": true },
+      { "url": "https://www.clarin.com/rss/lo-ultimo/", "name": "Clarín", "enabled": true },
+      { "url": "https://www.infobae.com/feeds/rss/", "name": "Infobae", "enabled": true },
+      { "url": "https://www.pagina12.com.ar/rss/portada", "name": "Página 12", "enabled": true },
+      { "url": "https://www.ambito.com/rss/home.xml", "name": "Ámbito", "enabled": true },
+      { "url": "https://www.perfil.com/feed", "name": "Perfil", "enabled": true },
+      { "url": "https://www.telam.com.ar/rss2/ultimasnoticias.xml", "name": "Télam", "enabled": true }
+    ],
+    "rosario": [
+      { "url": "https://www.lacapital.com.ar/rss/", "name": "La Capital", "enabled": true },
+      { "url": "https://www.rosario3.com/feed/", "name": "Rosario3", "enabled": true },
+      { "url": "https://www.elciudadanoweb.com/feed/", "name": "El Ciudadano", "enabled": true },
+      { "url": "https://www.elciudadanoweb.com/feed/", "name": "El Ciudadano Rosario", "enabled": true },
+      { "url": "https://www.air.org.ar/feed/", "name": "AIR Rosario", "enabled": true }
+    ],
+    "economia": [
+      { "url": "https://www.cronista.com/rss/economia/", "name": "El Cronista Economía", "enabled": true },
+      { "url": "https://www.ambito.com/rss/economia.xml", "name": "Ámbito Economía", "enabled": true },
+      { "url": "https://www.iprofesional.com/rss/economia.xml", "name": "iProfesional", "enabled": true }
+    ],
+    "deportes": [
+      { "url": "https://www.ole.com.ar/rss/", "name": "Olé", "enabled": true },
+      { "url": "https://www.tycsports.com/feed/", "name": "TyC Sports", "enabled": true },
+      { "url": "https://www.espn.com.ar/rss/news", "name": "ESPN", "enabled": true }
+    ],
+    "espectaculos": [
+      { "url": "https://www.pronto.com.ar/rss.xml", "name": "Pronto", "enabled": true },
+      { "url": "https://www.ciudad.com.ar/rss/espectaculos", "name": "Ciudad Espectáculos", "enabled": true }
+    ],
+    "tecnologia": [
+      { "url": "https://www.lanacion.com.ar/tema/tecnologia-tid47245/rss/", "name": "La Nación Tech", "enabled": true },
+      { "url": "https://www.infobae.com/feeds/rss/tecno.xml", "name": "Infobae Tecno", "enabled": true }
+    ],
+    "internacionales": [
+      { "url": "https://feeds.bbci.co.uk/mundo/rss.xml", "name": "BBC Mundo", "enabled": true },
+      { "url": "https://rss.nytimes.com/services/xml/rss/nyt/Americas.xml", "name": "NY Times Americas", "enabled": true },
+      { "url": "https://cnnespanol.cnn.com/feed/", "name": "CNN Español", "enabled": true }
+    ]
+  },
+  "settings": {
+    "maxArticlesPerCategory": 12,
+    "requestTimeout": 8000,
+    "retryFailedRequests": true,
+    "showLoadingProgress": true
+  }
+}
