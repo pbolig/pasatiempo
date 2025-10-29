@@ -8,7 +8,6 @@ const startButton = document.getElementById('start-button');
 const restartButton = document.getElementById('restart-button');
 const finalScoreElement = document.getElementById('final-score');
 
-// ----- ¡NUEVA VARIABLE! -----
 const blockContainer = document.getElementById('block-container');
 
 const COLS = 10;
@@ -30,17 +29,16 @@ let board, score, level, totalLinesCleared, isPaused, isGameOver;
 let currentPiece, nextPiece, currentPosition;
 let lastTime, dropCounter, animationFrameId;
 
-// ----- FUNCIÓN draw() MODIFICADA -----
+// Variables para control táctil
+let touchStartX = 0;
+let touchStartY = 0;
+
+
 function draw() {
     if (!board) return;
     
-    // ¡YA NO BORRAMOS EL gameBoardElement!
-    // Solo borramos el contenedor de bloques.
     blockContainer.innerHTML = ''; 
-    
-    // Los overlays ya no se tocan aquí.
 
-    // Dibuja los bloques del tablero
     board.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value > 0) {
@@ -48,13 +46,11 @@ function draw() {
                 block.className = `block ${PIECES[value - 1].color}`;
                 block.style.gridRowStart = y + 1;
                 block.style.gridColumnStart = x + 1;
-                // Añade al blockContainer
                 blockContainer.appendChild(block);
             }
         });
     });
 
-    // Dibuja la pieza actual
     if (currentPiece) {
         currentPiece.shape.forEach((row, y) => {
             row.forEach((value, x) => {
@@ -63,7 +59,6 @@ function draw() {
                     block.className = `block ${currentPiece.color}`;
                     block.style.gridRowStart = currentPosition.y + y + 1;
                     block.style.gridColumnStart = currentPosition.x + x + 1;
-                    // Añade al blockContainer
                     blockContainer.appendChild(block);
                 }
             });
@@ -71,7 +66,6 @@ function draw() {
     }
 }
 
-// ----- FUNCIÓN drawNextPiece() MODIFICADA (para el tamaño) -----
 function drawNextPiece() {
     nextPieceBoardElement.innerHTML = '';
     if (nextPiece) {
@@ -79,7 +73,6 @@ function drawNextPiece() {
         const rows = shape.length;
         const cols = shape[0].length;
 
-        // Usa el tamaño de bloque correcto, no 1fr
         nextPieceBoardElement.style.gridTemplateRows = `repeat(${rows}, var(--block-size))`;
         nextPieceBoardElement.style.gridTemplateColumns = `repeat(${cols}, var(--block-size))`;
 
@@ -250,7 +243,6 @@ function update(time = 0) {
     animationFrameId = requestAnimationFrame(update);
 }
 
-// ----- MANEJO DE CONTROLES DE TECLADO (Sin cambios) -----
 document.addEventListener('keydown', event => {
     if (event.key.toLowerCase() === 'p') {
         togglePause();
@@ -270,25 +262,23 @@ document.addEventListener('keydown', event => {
     draw();
 });
 
-// ----- MANEJO DE BOTONES (Conexión de controles táctiles) -----
-// LOS EVENTOS TÁCTILES SE SIGUEN APLICANDO AL gameBoardElement (el padre)
+
 startButton.addEventListener('click', () => {
     startScreen.classList.add('hidden');
-    gameBoardElement.addEventListener('touchstart', handleTouchStart);
-    gameBoardElement.addEventListener('touchmove', handleTouchMove);
+    gameBoardElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+    gameBoardElement.addEventListener('touchmove', handleTouchMove, { passive: false });
     gameBoardElement.addEventListener('touchend', handleTouchEnd);
     startGame();
 });
 
 restartButton.addEventListener('click', () => {
     endScreen.classList.add('hidden');
-    gameBoardElement.addEventListener('touchstart', handleTouchStart);
-    gameBoardElement.addEventListener('touchmove', handleTouchMove);
+    gameBoardElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+    gameBoardElement.addEventListener('touchmove', handleTouchMove, { passive: false });
     gameBoardElement.addEventListener('touchend', handleTouchEnd);
     startGame();
 });
 
-// Sobrescribir endGame para desconectar eventos
 const originalEndGame = endGame;
 endGame = function() {
     originalEndGame();
@@ -297,16 +287,16 @@ endGame = function() {
     gameBoardElement.removeEventListener('touchend', handleTouchEnd);
 }
 
-// Inicializa el tablero vacío (sin los overlays)
 board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 draw();
 
 
 // ----------------------------------
-// ----- FUNCIONES TÁCTILES (Sin cambios) -----
+// ----- FUNCIONES TÁCTILES MEJORADAS -----
 // ----------------------------------
 
 function handleTouchStart(e) {
+    // Le decimos al navegador que no haga scroll, etc.
     e.preventDefault(); 
     if (isPaused || isGameOver) return;
     touchStartX = e.touches[0].clientX;
@@ -314,12 +304,14 @@ function handleTouchStart(e) {
 }
 
 function handleTouchMove(e) {
+    // Prevenimos el scroll mientras se mueve el dedo
     e.preventDefault();
 }
 
 function handleTouchEnd(e) {
-    e.preventDefault();
     if (isPaused || isGameOver) return;
+    
+    // e.preventDefault(); // No es necesario aquí
     
     const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
@@ -330,29 +322,32 @@ function handleTouchEnd(e) {
     const absDeltaX = Math.abs(deltaX);
     const absDeltaY = Math.abs(deltaY);
 
-    // Ajustamos los umbrales (thresholds) para que sean un poco más sensibles
-    const swipeThreshold = 30; 
-    const tapThreshold = 30;   
-    const hardDropThreshold = 100;
+    // Umbrales (distancia en píxeles para detectar gesto)
+    const swipeThreshold = 40; // Deslizamiento
+    const tapThreshold = 40;   // Toque (más permisivo)
+    const hardDropThreshold = 120; // Deslizamiento rápido p/bajar
 
-    if (absDeltaX < tapThreshold && absDeltaY < tapThreshold) {
-        // Es un TAP (Tocar)
-        rotatePiece();
+    // Lógica de gestos mejorada (más robusta)
+    // Prioriza el movimiento más claro (vertical vs horizontal)
+
+    if (absDeltaY > absDeltaX) {
+        // Gesto VERTICAL
+        if (deltaY > hardDropThreshold) {
+            hardDrop(); // Swipe largo hacia abajo
+        } else if (deltaY > swipeThreshold) {
+            movePiece(0, 1); // Swipe corto hacia abajo
+            dropCounter = 0;
+        }
     } else if (absDeltaX > absDeltaY) {
-        // Es un SWIPE HORIZONTAL (Deslizar a los lados)
+        // Gesto HORIZONTAL
         if (deltaX > swipeThreshold) {
             movePiece(1, 0); // Derecha
         } else if (deltaX < -swipeThreshold) {
             movePiece(-1, 0); // Izquierda
         }
-    } else {
-        // Es un SWIPE VERTICAL (Deslizar hacia abajo)
-        if (deltaY > hardDropThreshold) {
-            hardDrop(); // Swipe rápido (Hard Drop)
-        } else if (deltaY > swipeThreshold) {
-            movePiece(0, 1); // Swipe lento (Bajar)
-            dropCounter = 0;
-        }
+    } else if (absDeltaX < tapThreshold && absDeltaY < tapThreshold) {
+         // Si no fue un swipe claro, es un TAP (Tocar)
+        rotatePiece();
     }
     
     draw();
