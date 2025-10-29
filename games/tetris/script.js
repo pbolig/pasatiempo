@@ -29,7 +29,6 @@ let board, score, level, totalLinesCleared, isPaused, isGameOver;
 let currentPiece, nextPiece, currentPosition;
 let lastTime, dropCounter, animationFrameId;
 
-// Variables para control táctil
 let touchStartX = 0;
 let touchStartY = 0;
 
@@ -263,28 +262,38 @@ document.addEventListener('keydown', event => {
 });
 
 
-startButton.addEventListener('click', () => {
-    startScreen.classList.add('hidden');
+// ----- ¡CORRECCIÓN CRÍTICA DE LISTENERS! -----
+// Nos aseguramos de que TODOS los eventos táctiles
+// estén marcados como NO pasivos.
+
+function addTouchListeners() {
     gameBoardElement.addEventListener('touchstart', handleTouchStart, { passive: false });
     gameBoardElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-    gameBoardElement.addEventListener('touchend', handleTouchEnd);
+    gameBoardElement.addEventListener('touchend', handleTouchEnd, { passive: false });
+}
+
+function removeTouchListeners() {
+    gameBoardElement.removeEventListener('touchstart', handleTouchStart, { passive: false });
+    gameBoardElement.removeEventListener('touchmove', handleTouchMove, { passive: false });
+    gameBoardElement.removeEventListener('touchend', handleTouchEnd, { passive: false });
+}
+
+startButton.addEventListener('click', () => {
+    startScreen.classList.add('hidden');
+    addTouchListeners();
     startGame();
 });
 
 restartButton.addEventListener('click', () => {
     endScreen.classList.add('hidden');
-    gameBoardElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-    gameBoardElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-    gameBoardElement.addEventListener('touchend', handleTouchEnd);
+    addTouchListeners();
     startGame();
 });
 
 const originalEndGame = endGame;
 endGame = function() {
     originalEndGame();
-    gameBoardElement.removeEventListener('touchstart', handleTouchStart);
-    gameBoardElement.removeEventListener('touchmove', handleTouchMove);
-    gameBoardElement.removeEventListener('touchend', handleTouchEnd);
+    removeTouchListeners();
 }
 
 board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
@@ -296,7 +305,6 @@ draw();
 // ----------------------------------
 
 function handleTouchStart(e) {
-    // Le decimos al navegador que no haga scroll, etc.
     e.preventDefault(); 
     if (isPaused || isGameOver) return;
     touchStartX = e.touches[0].clientX;
@@ -304,14 +312,14 @@ function handleTouchStart(e) {
 }
 
 function handleTouchMove(e) {
-    // Prevenimos el scroll mientras se mueve el dedo
     e.preventDefault();
 }
 
 function handleTouchEnd(e) {
-    if (isPaused || isGameOver) return;
+    // ¡Añadimos preventDefault() aquí también!
+    e.preventDefault();
     
-    // e.preventDefault(); // No es necesario aquí
+    if (isPaused || isGameOver) return;
     
     const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
@@ -322,31 +330,24 @@ function handleTouchEnd(e) {
     const absDeltaX = Math.abs(deltaX);
     const absDeltaY = Math.abs(deltaY);
 
-    // Umbrales (distancia en píxeles para detectar gesto)
-    const swipeThreshold = 40; // Deslizamiento
-    const tapThreshold = 40;   // Toque (más permisivo)
-    const hardDropThreshold = 120; // Deslizamiento rápido p/bajar
-
-    // Lógica de gestos mejorada (más robusta)
-    // Prioriza el movimiento más claro (vertical vs horizontal)
+    const swipeThreshold = 40; 
+    const tapThreshold = 40;   
+    const hardDropThreshold = 120; 
 
     if (absDeltaY > absDeltaX) {
-        // Gesto VERTICAL
         if (deltaY > hardDropThreshold) {
-            hardDrop(); // Swipe largo hacia abajo
+            hardDrop();
         } else if (deltaY > swipeThreshold) {
-            movePiece(0, 1); // Swipe corto hacia abajo
+            movePiece(0, 1);
             dropCounter = 0;
         }
     } else if (absDeltaX > absDeltaY) {
-        // Gesto HORIZONTAL
         if (deltaX > swipeThreshold) {
             movePiece(1, 0); // Derecha
         } else if (deltaX < -swipeThreshold) {
             movePiece(-1, 0); // Izquierda
         }
     } else if (absDeltaX < tapThreshold && absDeltaY < tapThreshold) {
-         // Si no fue un swipe claro, es un TAP (Tocar)
         rotatePiece();
     }
     

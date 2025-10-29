@@ -7,6 +7,14 @@
     --block-size: min(30px, 8vw); 
 }
 
+/* ----- ¡CORRECCIÓN CRÍTICA DE SCROLL MÓVIL! ----- */
+html {
+    height: 100%;
+    overflow: hidden;
+    /* Prohíbe el "rebote" de la página en móviles */
+    overscroll-behavior: none;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--main-bg-color);
@@ -20,9 +28,12 @@ body {
     overflow: hidden;
     
     margin: 0;
-    /* Eliminamos el padding para un mejor ajuste */
     padding: 0; 
     box-sizing: border-box;
+    
+    /* Prohíbe el "rebote" y el scroll por gestos */
+    overscroll-behavior: none;
+    touch-action: none; /* Lo movemos aquí para que sea global */
 }
 
 h1, h2, h3 {
@@ -30,7 +41,6 @@ h1, h2, h3 {
     margin-top: 0;
 }
 
-/* El h1 ya no existe, eliminamos sus márgenes */
 h2, h3 {
     margin-bottom: 20px;
 }
@@ -53,8 +63,7 @@ h2, h3 {
     border: 2px solid var(--border-color);
     position: relative;
     
-    /* ----- ¡CORRECCIÓN TÁCTIL CLAVE! ----- */
-    /* Esto le dice al navegador que no robe los gestos táctiles */
+    /* Redundante, pero bueno: prohíbe gestos en el tablero */
     touch-action: none;
 }
 
@@ -161,8 +170,7 @@ h2, h3 {
 @media (max-width: 650px) {
     body {
         padding: 5px;
-        /* Este touch-action aquí también ayuda */
-        touch-action: none;
+        /* touch-action: none; ya no es necesario aquí, está global */
     }
     
     #game-container {
