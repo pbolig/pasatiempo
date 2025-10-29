@@ -4,7 +4,7 @@
     --board-bg-color: #0d1218;
     --main-font-color: #ecf0f1;
     --border-color: #95a5a6;
-    --block-size: min(30px, 8vw);
+    --block-size: min(30px, 8vw); 
 }
 
 body {
@@ -15,7 +15,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    
+    /* ----- CORRECCIÓN SCROLL VERTICAL ----- */
+    height: 100vh;      /* Fija la altura al 100% de la ventana */
+    overflow: hidden;   /* Oculta la barra de scroll */
+    
     margin: 0;
     padding: 10px;
     box-sizing: border-box;
@@ -24,6 +28,13 @@ body {
 h1, h2, h3 {
     text-align: center;
     margin-top: 0;
+}
+
+/* Reducimos el margen para que todo quepa */
+h1 {
+    margin-bottom: 10px;
+}
+h2, h3 {
     margin-bottom: 20px;
 }
 
@@ -39,25 +50,38 @@ h1, h2, h3 {
 }
 
 #game-board {
-    display: grid;
-    /* Usamos la variable para el tamaño del tablero */
-    grid-template-columns: repeat(10, var(--block-size));
-    grid-template-rows: repeat(20, var(--block-size));
-    
-    /* Definimos el tamaño explícitamente */
+    /* El tablero ahora solo es un CONTENEDOR RELATIVO */
     width: calc(var(--block-size) * 10);
     height: calc(var(--block-size) * 20);
-
     background-color: var(--board-bg-color);
     border: 2px solid var(--border-color);
     position: relative;
+    
+    /* Quitamos la grilla de aquí... */
+}
+
+/* ----- NUEVO ESTILO PARA EL CONTENEDOR DE BLOQUES ----- */
+#block-container {
+    /* ...y la ponemos aquí */
+    display: grid;
+    grid-template-columns: repeat(10, var(--block-size));
+    grid-template-rows: repeat(20, var(--block-size));
+    
+    /* Ocupa todo el game-board */
+    width: 100%;
+    height: 100%;
+    
+    /* Se posiciona en el fondo */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
 #game-info {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Ancho mínimo basado en el tamaño de bloque */
     min-width: calc(var(--block-size) * 5); 
 }
 
@@ -68,13 +92,11 @@ h1, h2, h3 {
 }
 
 #next-piece-board {
-    display: grid; /* Cambiado a grid para alinear mejor la pieza */
+    display: grid;
     align-items: center;
-    justify-items: center;
+    justify-content: center; /* Centra la pieza horizontalmente */
     background-color: var(--board-bg-color);
     border: 1px solid var(--border-color);
-    
-    /* Tamaño basado en la variable */
     width: calc(var(--block-size) * 5);
     height: calc(var(--block-size) * 5);
     padding: calc(var(--block-size) * 0.5);
@@ -109,9 +131,12 @@ h1, h2, h3 {
     justify-content: center;
     color: var(--main-font-color);
     text-align: center;
-    z-index: 100;
     padding: 20px;
     box-sizing: border-box;
+    
+    /* ----- CORRECCIÓN TÁCTIL ----- */
+    /* Asegura que el overlay esté ENCIMA del block-container */
+    z-index: 100; 
 }
 
 .game-overlay h2 {
@@ -119,12 +144,10 @@ h1, h2, h3 {
     margin-bottom: 10px;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
 }
-
 .game-overlay p {
     font-size: 1.2em;
     margin-bottom: 25px;
 }
-
 .game-overlay button {
     font-size: 1.2em;
     font-weight: bold;
@@ -136,7 +159,6 @@ h1, h2, h3 {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 }
-
 .game-overlay button:hover {
     background-color: var(--main-font-color);
     color: var(--main-bg-color);
@@ -147,49 +169,36 @@ h1, h2, h3 {
     display: none;
 }
 
-/* ---------------------------------- */
-/* ----- MEDIA QUERY PARA MÓVILES ----- */
-/* ---------------------------------- */
-
+/* ----- MEDIA QUERY (Sin cambios, pero incluido) ----- */
 @media (max-width: 650px) {
     body {
         padding: 5px;
-        /* Evita que el body se "mueva" al tocar */
         touch-action: none;
     }
-
     h1 {
         font-size: 1.5em;
         margin-bottom: 10px;
     }
-
     #game-container {
-        /* Apila el tablero y la info verticalmente */
         flex-direction: column;
         align-items: center;
         padding: 10px;
         gap: 20px;
     }
-
     #game-info {
-        /* Pone la Puntuación y Siguiente uno al lado del otro */
         flex-direction: row;
         justify-content: space-around;
         width: 100%;
         min-width: unset;
         align-items: center;
     }
-
     #game-info h2, #game-info h3 {
         margin-bottom: 10px;
     }
-
     #score {
         margin: 0;
         margin-bottom: 10px;
     }
-
-    /* Ajustamos el tamaño de letra en los overlays */
     .game-overlay h2 {
         font-size: 2em;
     }

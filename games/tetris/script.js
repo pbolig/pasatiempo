@@ -8,6 +8,9 @@ const startButton = document.getElementById('start-button');
 const restartButton = document.getElementById('restart-button');
 const finalScoreElement = document.getElementById('final-score');
 
+// ----- ¡NUEVA VARIABLE! -----
+const blockContainer = document.getElementById('block-container');
+
 const COLS = 10;
 const ROWS = 20;
 const PIECES = [
@@ -22,26 +25,22 @@ const PIECES = [
 const LEVEL_SPEEDS = [800, 720, 630, 550, 470, 380, 300, 220, 150, 100];
 const SCORE_VALUES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
+
 let board, score, level, totalLinesCleared, isPaused, isGameOver;
 let currentPiece, nextPiece, currentPosition;
 let lastTime, dropCounter, animationFrameId;
 
-// ----- NUEVAS VARIABLES PARA CONTROL TÁCTIL -----
-let touchStartX = 0;
-let touchStartY = 0;
-const swipeThreshold = 50; // Mínimo de píxeles para detectar un swipe
-const tapThreshold = 20;   // Máximo de píxeles para considerarlo un "tap"
-const hardDropThreshold = 150; // Mínimo de píxeles para un hard drop
-
+// ----- FUNCIÓN draw() MODIFICADA -----
 function draw() {
     if (!board) return;
-    gameBoardElement.innerHTML = '';
     
-    // Redibujar los overlays para que no se borren
-    gameBoardElement.appendChild(startScreen);
-    gameBoardElement.appendChild(endScreen);
-    gameBoardElement.appendChild(pauseScreen);
+    // ¡YA NO BORRAMOS EL gameBoardElement!
+    // Solo borramos el contenedor de bloques.
+    blockContainer.innerHTML = ''; 
+    
+    // Los overlays ya no se tocan aquí.
 
+    // Dibuja los bloques del tablero
     board.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value > 0) {
@@ -49,11 +48,13 @@ function draw() {
                 block.className = `block ${PIECES[value - 1].color}`;
                 block.style.gridRowStart = y + 1;
                 block.style.gridColumnStart = x + 1;
-                gameBoardElement.appendChild(block);
+                // Añade al blockContainer
+                blockContainer.appendChild(block);
             }
         });
     });
 
+    // Dibuja la pieza actual
     if (currentPiece) {
         currentPiece.shape.forEach((row, y) => {
             row.forEach((value, x) => {
@@ -62,16 +63,15 @@ function draw() {
                     block.className = `block ${currentPiece.color}`;
                     block.style.gridRowStart = currentPosition.y + y + 1;
                     block.style.gridColumnStart = currentPosition.x + x + 1;
-                    gameBoardElement.appendChild(block);
+                    // Añade al blockContainer
+                    blockContainer.appendChild(block);
                 }
             });
         });
     }
 }
 
-// ----- FUNCIÓN drawNextPiece MODIFICADA -----
-// Ya no usa pixeles fijos, usa '1fr' para llenar 
-// el contenedor que definimos en el CSS.
+// ----- FUNCIÓN drawNextPiece() MODIFICADA (para el tamaño) -----
 function drawNextPiece() {
     nextPieceBoardElement.innerHTML = '';
     if (nextPiece) {
@@ -79,9 +79,9 @@ function drawNextPiece() {
         const rows = shape.length;
         const cols = shape[0].length;
 
-        // Configurar la grilla del 'next-piece-board' dinámicamente
-        nextPieceBoardElement.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-        nextPieceBoardElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+        // Usa el tamaño de bloque correcto, no 1fr
+        nextPieceBoardElement.style.gridTemplateRows = `repeat(${rows}, var(--block-size))`;
+        nextPieceBoardElement.style.gridTemplateColumns = `repeat(${cols}, var(--block-size))`;
 
         shape.forEach((row, y) => {
             row.forEach((value, x) => {
@@ -194,7 +194,7 @@ function lockPiece() {
     shape.forEach((row, r) => {
         row.forEach((value, c) => {
             if (value > 0) {
-                if (y + r < 0) return; // Evita error si se bloquea por encima
+                if (y + r < 0) return; 
                 board[y + r][x + c] = pieceIndex + 1;
             }
         });
@@ -271,9 +271,9 @@ document.addEventListener('keydown', event => {
 });
 
 // ----- MANEJO DE BOTONES (Conexión de controles táctiles) -----
+// LOS EVENTOS TÁCTILES SE SIGUEN APLICANDO AL gameBoardElement (el padre)
 startButton.addEventListener('click', () => {
     startScreen.classList.add('hidden');
-    // Conectar eventos táctiles AL INICIAR
     gameBoardElement.addEventListener('touchstart', handleTouchStart);
     gameBoardElement.addEventListener('touchmove', handleTouchMove);
     gameBoardElement.addEventListener('touchend', handleTouchEnd);
@@ -282,7 +282,6 @@ startButton.addEventListener('click', () => {
 
 restartButton.addEventListener('click', () => {
     endScreen.classList.add('hidden');
-    // Conectar eventos táctiles (por si es la primera partida en móvil)
     gameBoardElement.addEventListener('touchstart', handleTouchStart);
     gameBoardElement.addEventListener('touchmove', handleTouchMove);
     gameBoardElement.addEventListener('touchend', handleTouchEnd);
@@ -293,22 +292,21 @@ restartButton.addEventListener('click', () => {
 const originalEndGame = endGame;
 endGame = function() {
     originalEndGame();
-    // Desconectar eventos táctiles AL TERMINAR
     gameBoardElement.removeEventListener('touchstart', handleTouchStart);
     gameBoardElement.removeEventListener('touchmove', handleTouchMove);
     gameBoardElement.removeEventListener('touchend', handleTouchEnd);
 }
 
+// Inicializa el tablero vacío (sin los overlays)
 board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 draw();
 
 
 // ----------------------------------
-// ----- NUEVAS FUNCIONES TÁCTILES -----
+// ----- FUNCIONES TÁCTILES (Sin cambios) -----
 // ----------------------------------
 
 function handleTouchStart(e) {
-    // Evita que la página se mueva
     e.preventDefault(); 
     if (isPaused || isGameOver) return;
     touchStartX = e.touches[0].clientX;
@@ -332,6 +330,11 @@ function handleTouchEnd(e) {
     const absDeltaX = Math.abs(deltaX);
     const absDeltaY = Math.abs(deltaY);
 
+    // Ajustamos los umbrales (thresholds) para que sean un poco más sensibles
+    const swipeThreshold = 30; 
+    const tapThreshold = 30;   
+    const hardDropThreshold = 100;
+
     if (absDeltaX < tapThreshold && absDeltaY < tapThreshold) {
         // Es un TAP (Tocar)
         rotatePiece();
@@ -352,6 +355,5 @@ function handleTouchEnd(e) {
         }
     }
     
-    // Redibujar después de la acción
     draw();
 }
